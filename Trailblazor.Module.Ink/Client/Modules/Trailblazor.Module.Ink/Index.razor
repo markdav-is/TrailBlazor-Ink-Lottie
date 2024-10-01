@@ -1,0 +1,43 @@
+
+@namespace Trailblazor.Module.Ink
+@inherits ModuleBase
+
+@inject ISettingService SettingService
+
+
+@if (PageState.EditMode)
+{
+    <h2>@ModuleState.Title</h2>
+}
+else if (_prompt == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="text-center">
+                    <p>
+                        <h3>@_prompt</h3>
+                    </p>
+                   
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    private string _prompt;
+
+    protected override async Task OnInitializedAsync()
+    {
+        // Load the Ink story from settings
+        var settings = await SettingService.GetModuleSettingsAsync(ModuleState.ModuleId);
+        _prompt = SettingService.GetSetting(settings, "Ink", "Ink goes here");
+    }
+
+  
+}

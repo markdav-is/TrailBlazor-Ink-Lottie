@@ -1,0 +1,39 @@
+@namespace Trailblazor.Module.Lottie
+@inherits ModuleBase
+@inject ISettingService SettingService
+
+@if (PageState.EditMode)
+{
+    <h2>@ModuleState.Title</h2>
+}
+else if (_lottie == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="text-center">
+                    <p>
+                        <h3>@_lottie</h3>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+@code {
+    private string _lottie;
+ 
+    protected override async Task OnInitializedAsync()
+    {
+        // Load the Ink story from settings
+        var settings = await SettingService.GetModuleSettingsAsync(ModuleState.ModuleId);
+        _lottie = SettingService.GetSetting(settings, "Lottie", "Lottie goes here");
+
+    }
+
+  
+}
