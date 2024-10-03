@@ -17,6 +17,13 @@ namespace Trailblazor.Module.Lottie
             ReleaseVersions = "1.0.0",
             Dependencies = "Trailblazor.Module.Lottie.Shared.Oqtane",
             PackageName = "Trailblazor.Module.Lottie",
+            Resources = new List<Resource>()
+            {
+                //load the lottie-web component library
+                new Resource { ResourceType = ResourceType.Script,
+                    ES6Module=true, Location=ResourceLocation.Body,
+                    Url = "https://unpkg.com/@lottiefiles/dotlottie-wc@latest/dist/dotlottie-wc.js" }
+            }
         };
     }
 }

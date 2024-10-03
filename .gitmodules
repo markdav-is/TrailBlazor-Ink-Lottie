@@ -3,3 +3,9 @@
 	url = https://github.com/oqtane/oqtane.framework
 	branch = master
 	ignore = dirty
+
+[submodule "ink"]
+	path = ink
+	url = https://github.com/inkle/ink
+	branch = master
+	ignore = dirty

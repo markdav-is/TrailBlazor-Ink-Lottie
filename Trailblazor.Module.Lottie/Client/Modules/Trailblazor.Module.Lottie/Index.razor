@@ -1,4 +1,5 @@
 @namespace Trailblazor.Module.Lottie
+@using System.ComponentModel
 @inherits ModuleBase
 @inject ISettingService SettingService
 
@@ -17,12 +18,23 @@ else
             <div class="col-md-6">
                 <div class="text-center">
                     <p>
-                        <h3>@_lottie</h3>
+                        <dotlottie-wc src="@_lottie" autoplay loop></dotlottie-wc>
                     </p>
                 </div>
             </div>
         </div>
     </div>
+
+    @* Hack: OK for demo but should be registered the Oqtane way *@
+    <script>
+        window.updateLottie = function(url) {
+            document.querySelector('dotlottie-wc').dotLottie.load({
+                loop: true,
+                autoplay: true,
+                src: url
+            });
+        }
+    </script>
 }
 @code {
     private string _lottie;
@@ -33,7 +45,20 @@ else
         var settings = await SettingService.GetModuleSettingsAsync(ModuleState.ModuleId);
         _lottie = SettingService.GetSetting(settings, "Lottie", "Lottie goes here");
 
+        ((INotifyPropertyChanged)SiteState.Properties).PropertyChanged += HandlePropertyChanged;
+
     }
 
+    private void HandlePropertyChanged(object sender, PropertyChangedEventArgs args)
+    {
+        if (args.PropertyName == "Lottie")
+        {
+            string url = SiteState.Properties["Lottie"];
+
+            // call the JS function to update the Lottie animation
+            JSRuntime.InvokeVoidAsync("updateLottie", url).GetAwaiter();
+
+        }
+    }
   
 }
